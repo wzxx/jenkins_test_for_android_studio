@@ -1,9 +1,14 @@
 package com.example.litingting.gps_baidumap;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTextView=(TextView)findViewById(R.id.text);
+        mTextView=(TextView)findViewById(R.id.GPSmessage);
 
         mLocationClient=new LocationClient(getApplicationContext());//声明LocationClient类
         initLocation();
@@ -36,7 +41,52 @@ public class MainActivity extends AppCompatActivity {
         }else {
             Log.d(TAG,"LocationClient is null or not started");
         }
-        mTextView.setText(myListener.getResult());
+
+        /**
+         * 双击事件：关掉百度位置服务
+         */
+        final GestureDetector gestureDetector=new GestureDetector(MainActivity.this,new GestureDetector.SimpleOnGestureListener(){
+            /**
+             * 发生确定的单击时执行
+             * @param e
+             * @return
+             */
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {//单击事件
+                return false;
+            }
+
+            /**
+             * 双击发生时的通知
+             * @param e
+             * @return
+             */
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {//双击事件
+                mLocationClient.stop();
+                return super.onDoubleTap(e);
+            }
+
+            /**
+             * 双击手势过程中发生的事件，包括按下、移动和抬起事件
+             * @param e
+             * @return
+             */
+            @Override
+            public boolean onDoubleTapEvent(MotionEvent e) {
+                return super.onDoubleTapEvent(e);
+            }
+        });
+
+        mTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return gestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+
+
+//        mTextView.setText(myListener.getResult());
     }
 
     /**

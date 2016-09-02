@@ -13,14 +13,18 @@ import java.util.List;
  * BDLocation类，封装了定位SDK的定位结果，在BDLocationListener的onReceiveLocation方法中获取。
  * 通过该类用户可以获取error code，位置的坐标，精度半径等信息。
  *
- * Created by litingting on 16/7/26.
+ * Created by wzxx on 16/7/26.
  */
 public class MyLocationListener implements BDLocationListener {
 
-    private String result;
+    private static String result;
 
     public String getResult(){
-        return result;
+        if (result==null){
+            return null;
+        }else {
+            return result;
+        }
     }
     /**
      * 有2个方法需要实现： 1.接收异步返回的定位结果，参数是BDLocation类型参数。
