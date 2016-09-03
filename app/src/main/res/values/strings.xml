@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GPS_baiduMap</string>
 
-    <string name="hint">以下是GPS定位后的信息（双击屏幕可关掉百度位置服务）：</string>
+    <string name="hint">以下是GPS定位后的信息：</string>
+    <string name="hintBottom">注：双击屏幕可显示定位</string>
+    <string name="stopServiceHint">关闭地图服务</string>
 </resources>

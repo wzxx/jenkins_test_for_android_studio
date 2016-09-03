@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String TAG=".MainActivity ";
     private TextView mTextView;
+    private Button btnStopService;
     public LocationClient mLocationClient=null;
 //    public BDLocationListener myListener=new MyLocationListener();
     public MyLocationListener myListener=new MyLocationListener();
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView=(TextView)findViewById(R.id.GPSmessage);
+        btnStopService=(Button)findViewById(R.id.stopService);
 
         mLocationClient=new LocationClient(getApplicationContext());//声明LocationClient类
         initLocation();
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public boolean onDoubleTap(MotionEvent e) {//双击事件
-                mLocationClient.stop();
+                mTextView.setText(myListener.getResult());
                 return super.onDoubleTap(e);
             }
 
@@ -85,8 +88,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnStopService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLocationClient.stop();
+            }
+        });
+
 
 //        mTextView.setText(myListener.getResult());
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mLocationClient.stop();
     }
 
     /**
